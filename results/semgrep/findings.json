@@ -1,0 +1,1063 @@
+{
+  "version": "1.130.0",
+  "results": [
+    {
+      "check_id": "ruby.lang.security.missing-csrf-protection.missing-csrf-protection",
+      "path": "app/controllers/application_controller.rb",
+      "start": {
+        "line": 1,
+        "col": 1,
+        "offset": 0
+      },
+      "end": {
+        "line": 33,
+        "col": 25,
+        "offset": 720
+      },
+      "extra": {
+        "metavars": {
+          "$CONTROLLER": {
+            "start": {
+              "line": 1,
+              "col": 7,
+              "offset": 6
+            },
+            "end": {
+              "line": 1,
+              "col": 28,
+              "offset": 27
+            },
+            "abstract_content": "ApplicationController"
+          }
+        },
+        "message": "Detected controller which does not enable cross-site request forgery protections using 'protect_from_forgery'. Add 'protect_from_forgery :with => :exception' to your controller class.",
+        "metadata": {
+          "cwe": [
+            "CWE-352: Cross-Site Request Forgery (CSRF)"
+          ],
+          "owasp": [
+            "A01:2021 - Broken Access Control"
+          ],
+          "source-rule-url": "https://github.com/presidentbeef/brakeman/blob/main/docs/warning_types/cross-site_request_forgery/index.markdown",
+          "category": "security",
+          "technology": [
+            "ruby"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A01_2021-Broken_Access_Control"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site Request Forgery (CSRF)"
+          ],
+          "source": "https://semgrep.dev/r/ruby.lang.security.missing-csrf-protection.missing-csrf-protection",
+          "shortlink": "https://sg.run/XLel",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 9720,
+              "rule_id": "r6UkO5",
+              "rv_id": 946486,
+              "url": "https://semgrep.dev/playground/r/zyTlkpj/ruby.lang.security.missing-csrf-protection.missing-csrf-protection",
+              "version_id": "zyTlkpj"
+            }
+          }
+        },
+        "severity": "ERROR",
+        "fingerprint": "a170daa276afed119e2b3035b305ef095aa251614d5857a50bfcc991afe723b4ca8d15f7da169d0d296ac81463abab4e53bf4aa1228f83d461edf443095321fe_0",
+        "lines": "class ApplicationController < ActionController::Base\n  before_action :reassign_params\n\n\n  #protect_from_forgery\n  protected\n\n\n  def reassign_params\n     #Reassign to lookup_hash, a common Meraki::Action pattern\n    @lookup_hash = params\n  end\n\n  def current_user\n    ### APPSEC Vuln 8: Cookie tampering ATO\n    @current_user ||= User.find(cookies[:user_id]) if cookies[:user_id]\n  end\n\n  def get_email\n    # Will this hide the SQLi?\n    @lookup_hash[:email]\n  end\n\n  def get_id\n    @lookup_hash[:id]\n  end\n\n  def authenticate_user\n    if user = User.find_by_token(request.headers[\"X-Authentication-Token\"])\n      puts \"Authenticated as user #{user.id}\"\n      cookies[:user_id] = user.id\n    else\n      render status: 400",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "ruby.rails.security.brakeman.check-unscoped-find.check-unscoped-find",
+      "path": "app/controllers/application_controller.rb",
+      "start": {
+        "line": 16,
+        "col": 23,
+        "offset": 329
+      },
+      "end": {
+        "line": 16,
+        "col": 51,
+        "offset": 357
+      },
+      "extra": {
+        "metavars": {
+          "$MODEL": {
+            "start": {
+              "line": 16,
+              "col": 23,
+              "offset": 329
+            },
+            "end": {
+              "line": 16,
+              "col": 27,
+              "offset": 333
+            },
+            "abstract_content": "User"
+          }
+        },
+        "message": "Found an unscoped `find(...)` with user-controllable input. If the ActiveRecord model being searched against is sensitive, this may lead to Insecure Direct Object Reference (IDOR) behavior and allow users to read arbitrary records. Scope the find to the current user, e.g. `current_user.accounts.find(params[:id])`.",
+        "metadata": {
+          "source-rule-url": "https://github.com/presidentbeef/brakeman/blob/main/lib/brakeman/checks/check_unscoped_find.rb",
+          "category": "security",
+          "cwe": [
+            "CWE-639: Authorization Bypass Through User-Controlled Key"
+          ],
+          "owasp": [
+            "A05:2017 - Broken Access Control",
+            "A01:2021 - Broken Access Control"
+          ],
+          "technology": [
+            "ruby",
+            "rails"
+          ],
+          "references": [
+            "https://brakemanscanner.org/docs/warning_types/unscoped_find/",
+            "https://github.com/presidentbeef/brakeman/blob/main/test/apps/rails3.1/app/controllers/users_controller.rb"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "MEDIUM",
+          "impact": "HIGH",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/ruby.rails.security.brakeman.check-unscoped-find.check-unscoped-find",
+          "shortlink": "https://sg.run/dPbP",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 20734,
+              "rule_id": "x8Ud6d",
+              "rv_id": 946542,
+              "url": "https://semgrep.dev/playground/r/w8TKJeR/ruby.rails.security.brakeman.check-unscoped-find.check-unscoped-find",
+              "version_id": "w8TKJeR"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "80872302285936522afa67265f5d6cab8478b2de3d307b244f77bafa59181b175153787e1e0dace4545908829f098983fad9075633cbe7ee4c1c00a3e09d418b_0",
+        "lines": "    @current_user ||= User.find(cookies[:user_id]) if cookies[:user_id]",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "dataflow_trace": {
+          "taint_source": [
+            "CliLoc",
+            [
+              {
+                "path": "app/controllers/application_controller.rb",
+                "start": {
+                  "line": 16,
+                  "col": 33,
+                  "offset": 339
+                },
+                "end": {
+                  "line": 16,
+                  "col": 50,
+                  "offset": 356
+                }
+              },
+              "cookies[:user_id]"
+            ]
+          ],
+          "intermediate_vars": [],
+          "taint_sink": [
+            "CliLoc",
+            [
+              {
+                "path": "app/controllers/application_controller.rb",
+                "start": {
+                  "line": 16,
+                  "col": 23,
+                  "offset": 329
+                },
+                "end": {
+                  "line": 16,
+                  "col": 51,
+                  "offset": 357
+                }
+              },
+              "User.find(cookies[:user_id])"
+            ]
+          ]
+        },
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "ruby.rails.security.brakeman.check-unscoped-find.check-unscoped-find",
+      "path": "app/controllers/posts_controller.rb",
+      "start": {
+        "line": 21,
+        "col": 13,
+        "offset": 505
+      },
+      "end": {
+        "line": 21,
+        "col": 35,
+        "offset": 527
+      },
+      "extra": {
+        "metavars": {
+          "$MODEL": {
+            "start": {
+              "line": 21,
+              "col": 13,
+              "offset": 505
+            },
+            "end": {
+              "line": 21,
+              "col": 17,
+              "offset": 509
+            },
+            "abstract_content": "Post"
+          }
+        },
+        "message": "Found an unscoped `find(...)` with user-controllable input. If the ActiveRecord model being searched against is sensitive, this may lead to Insecure Direct Object Reference (IDOR) behavior and allow users to read arbitrary records. Scope the find to the current user, e.g. `current_user.accounts.find(params[:id])`.",
+        "metadata": {
+          "source-rule-url": "https://github.com/presidentbeef/brakeman/blob/main/lib/brakeman/checks/check_unscoped_find.rb",
+          "category": "security",
+          "cwe": [
+            "CWE-639: Authorization Bypass Through User-Controlled Key"
+          ],
+          "owasp": [
+            "A05:2017 - Broken Access Control",
+            "A01:2021 - Broken Access Control"
+          ],
+          "technology": [
+            "ruby",
+            "rails"
+          ],
+          "references": [
+            "https://brakemanscanner.org/docs/warning_types/unscoped_find/",
+            "https://github.com/presidentbeef/brakeman/blob/main/test/apps/rails3.1/app/controllers/users_controller.rb"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "MEDIUM",
+          "impact": "HIGH",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/ruby.rails.security.brakeman.check-unscoped-find.check-unscoped-find",
+          "shortlink": "https://sg.run/dPbP",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 20734,
+              "rule_id": "x8Ud6d",
+              "rv_id": 946542,
+              "url": "https://semgrep.dev/playground/r/w8TKJeR/ruby.rails.security.brakeman.check-unscoped-find.check-unscoped-find",
+              "version_id": "w8TKJeR"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "07dfd1ce48c0c7cedaec40dcda8e4bbc73948ee5c780ebf0d9cc37abd3c3fb4c0752b1dcb96ec279c49ea9331ec3b74b749200c73ea86ae9c2c4d64e8fb5a874_0",
+        "lines": "    @post = Post.find(params[:id])",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "dataflow_trace": {
+          "taint_source": [
+            "CliLoc",
+            [
+              {
+                "path": "app/controllers/posts_controller.rb",
+                "start": {
+                  "line": 21,
+                  "col": 23,
+                  "offset": 515
+                },
+                "end": {
+                  "line": 21,
+                  "col": 34,
+                  "offset": 526
+                }
+              },
+              "params[:id]"
+            ]
+          ],
+          "intermediate_vars": [],
+          "taint_sink": [
+            "CliLoc",
+            [
+              {
+                "path": "app/controllers/posts_controller.rb",
+                "start": {
+                  "line": 21,
+                  "col": 13,
+                  "offset": 505
+                },
+                "end": {
+                  "line": 21,
+                  "col": 35,
+                  "offset": 527
+                }
+              },
+              "Post.find(params[:id])"
+            ]
+          ]
+        },
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "ruby.rails.security.audit.xss.templates.avoid-html-safe.avoid-html-safe",
+      "path": "app/views/posts/show.html.erb",
+      "start": {
+        "line": 6,
+        "col": 13,
+        "offset": 91
+      },
+      "end": {
+        "line": 6,
+        "col": 28,
+        "offset": 106
+      },
+      "extra": {
+        "metavars": {
+          "$SOMETHING": {
+            "start": {
+              "line": 6,
+              "col": 13,
+              "offset": 91
+            },
+            "end": {
+              "line": 6,
+              "col": 18,
+              "offset": 96
+            },
+            "abstract_content": "title"
+          }
+        },
+        "message": "'html_safe' renders raw HTML. This means that normal HTML escaping is bypassed. If user data can be controlled here, this exposes your application to cross-site scripting (XSS). If you need to do this, be sure to correctly sanitize the data using a library such as DOMPurify.",
+        "metadata": {
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "source-rule-url": "https://github.com/presidentbeef/brakeman/blob/main/lib/brakeman/checks/check_cross_site_scripting.rb",
+          "references": [
+            "https://stackoverflow.com/questions/4251284/raw-vs-html-safe-vs-h-to-unescape-html#:~:text===",
+            "https://medium.com/sumone-technical-blog/a-pretty-way-to-unescape-html-in-a-ruby-on-rails-application-efc22b850027"
+          ],
+          "category": "security",
+          "technology": [
+            "rails"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/ruby.rails.security.audit.xss.templates.avoid-html-safe.avoid-html-safe",
+          "shortlink": "https://sg.run/Q8rD",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 9742,
+              "rule_id": "5rU4dE",
+              "rv_id": 946517,
+              "url": "https://semgrep.dev/playground/r/GxTP7Qd/ruby.rails.security.audit.xss.templates.avoid-html-safe.avoid-html-safe",
+              "version_id": "GxTP7Qd"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "65f19e67c9e57d85442e5dc3771db18cccf64465f631cae2af475061cabf5e29947e8f46a1c62c5dd3fef17ba8656d6e5d91e4c49b8a62e2bf812d14d4724a82_0",
+        "lines": "  <%= @post.title.html_safe %>",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "ruby.rails.security.audit.detailed-exceptions.detailed-exceptions",
+      "path": "config/environments/development.rb",
+      "start": {
+        "line": 13,
+        "col": 3,
+        "offset": 535
+      },
+      "end": {
+        "line": 13,
+        "col": 50,
+        "offset": 582
+      },
+      "extra": {
+        "metavars": {},
+        "message": "Found that the setting for providing detailed exception reports in Rails is set to true. This can lead to information exposure, where sensitive system or internal information is displayed to the end user. Instead, turn this setting off.",
+        "metadata": {
+          "owasp": [
+            "A01:2021 - Broken Access Control"
+          ],
+          "cwe": [
+            "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+          ],
+          "source-rule-url": "https://github.com/presidentbeef/brakeman/blob/main/lib/brakeman/checks/check_detailed_exceptions.rb",
+          "category": "security",
+          "technology": [
+            "rails"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A01_2021-Broken_Access_Control"
+          ],
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/ruby.rails.security.audit.detailed-exceptions.detailed-exceptions",
+          "shortlink": "https://sg.run/Je0d",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 16546,
+              "rule_id": "8GUAo4",
+              "rv_id": 946502,
+              "url": "https://semgrep.dev/playground/r/vdTGnqd/ruby.rails.security.audit.detailed-exceptions.detailed-exceptions",
+              "version_id": "vdTGnqd"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "71aebf908cae0b6c00649d9dad7d75ed8d3e592f416ea4693b8d445f4a04e3bc5b3ee399d0e3e9eefcefe32ecbe627975e2baffff536d9ca8cc1732356888a6b_0",
+        "lines": "  config.consider_all_requests_local       = true",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "ruby.lang.security.file-disclosure.file-disclosure",
+      "path": "config/environments/test.rb",
+      "start": {
+        "line": 11,
+        "col": 3,
+        "offset": 522
+      },
+      "end": {
+        "line": 11,
+        "col": 36,
+        "offset": 555
+      },
+      "extra": {
+        "metavars": {},
+        "message": "Special requests can determine whether a file exists on a filesystem that's outside the Rails app's root directory. To fix this, set config.serve_static_assets = false.",
+        "fix": "config.serve_static_assets = false",
+        "metadata": {
+          "cwe": [
+            "CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+          ],
+          "references": [
+            "https://github.com/presidentbeef/brakeman/blob/main/lib/brakeman/checks/check_file_disclosure.rb",
+            "https://groups.google.com/g/rubyonrails-security/c/23fiuwb1NBA/m/MQVM1-5GkPMJ"
+          ],
+          "category": "security",
+          "technology": [
+            "ruby"
+          ],
+          "owasp": [
+            "A05:2017 - Broken Access Control",
+            "A01:2021 - Broken Access Control"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Path Traversal"
+          ],
+          "source": "https://semgrep.dev/r/ruby.lang.security.file-disclosure.file-disclosure",
+          "shortlink": "https://sg.run/qrR1",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 9712,
+              "rule_id": "zdUyqE",
+              "rv_id": 946477,
+              "url": "https://semgrep.dev/playground/r/DkTNp5j/ruby.lang.security.file-disclosure.file-disclosure",
+              "version_id": "DkTNp5j"
+            }
+          }
+        },
+        "severity": "ERROR",
+        "fingerprint": "f71b25afb51a8a2b1f5bc878ce83a675d9ac4ad763aa2f8484761dbd77b08cde4979d4f20ffced51279bb7afb18ecebd5df01b96f9a322bf80b2710ba2dd5c5d_0",
+        "lines": "  config.serve_static_assets = true",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "ruby.rails.security.audit.detailed-exceptions.detailed-exceptions",
+      "path": "config/environments/test.rb",
+      "start": {
+        "line": 18,
+        "col": 3,
+        "offset": 755
+      },
+      "end": {
+        "line": 18,
+        "col": 50,
+        "offset": 802
+      },
+      "extra": {
+        "metavars": {},
+        "message": "Found that the setting for providing detailed exception reports in Rails is set to true. This can lead to information exposure, where sensitive system or internal information is displayed to the end user. Instead, turn this setting off.",
+        "metadata": {
+          "owasp": [
+            "A01:2021 - Broken Access Control"
+          ],
+          "cwe": [
+            "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+          ],
+          "source-rule-url": "https://github.com/presidentbeef/brakeman/blob/main/lib/brakeman/checks/check_detailed_exceptions.rb",
+          "category": "security",
+          "technology": [
+            "rails"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A01_2021-Broken_Access_Control"
+          ],
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/ruby.rails.security.audit.detailed-exceptions.detailed-exceptions",
+          "shortlink": "https://sg.run/Je0d",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 16546,
+              "rule_id": "8GUAo4",
+              "rv_id": 946502,
+              "url": "https://semgrep.dev/playground/r/vdTGnqd/ruby.rails.security.audit.detailed-exceptions.detailed-exceptions",
+              "version_id": "vdTGnqd"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "de44057d3029796289fc0e1134c530c261b2e21616363250ee931817f71a789082d9261fee5220afe4cedcd529af75721af25ab52532e1cc9e69a89604edde90_0",
+        "lines": "  config.consider_all_requests_local       = true",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "html.security.plaintext-http-link.plaintext-http-link",
+      "path": "public/index.html",
+      "start": {
+        "line": 195,
+        "col": 19,
+        "offset": 4176
+      },
+      "end": {
+        "line": 195,
+        "col": 76,
+        "offset": 4233
+      },
+      "extra": {
+        "metavars": {
+          "$URL": {
+            "start": {
+              "line": 195,
+              "col": 28,
+              "offset": 4185
+            },
+            "end": {
+              "line": 195,
+              "col": 58,
+              "offset": 4215
+            },
+            "abstract_content": "http://guides.rubyonrails.org/"
+          }
+        },
+        "message": "This link points to a plaintext HTTP URL. Prefer an encrypted HTTPS URL if possible.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-319: Cleartext Transmission of Sensitive Information"
+          ],
+          "owasp": [
+            "A03:2017 - Sensitive Data Exposure",
+            "A02:2021 - Cryptographic Failures"
+          ],
+          "confidence": "HIGH",
+          "subcategory": [
+            "vuln"
+          ],
+          "references": [
+            "https://cwe.mitre.org/data/definitions/319.html"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/html.security.plaintext-http-link.plaintext-http-link",
+          "shortlink": "https://sg.run/RA5q",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 39193,
+              "rule_id": "AbUnNo",
+              "rv_id": 945621,
+              "url": "https://semgrep.dev/playground/r/zyTlkQN/html.security.plaintext-http-link.plaintext-http-link",
+              "version_id": "zyTlkQN"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "b2f639dc7d8cbaad4d142bf3c5d9c2c4a0f726684b737dcb6f98c7888039d8fef54939c0994cf49683e497039b2f42aea91ca17d5ad94b3402f513e8f8ee7b86_0",
+        "lines": "              <li><a href=\"http://guides.rubyonrails.org/\">Rails Guides</a></li>",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "html.security.plaintext-http-link.plaintext-http-link",
+      "path": "public/index.html",
+      "start": {
+        "line": 196,
+        "col": 19,
+        "offset": 4257
+      },
+      "end": {
+        "line": 196,
+        "col": 70,
+        "offset": 4308
+      },
+      "extra": {
+        "metavars": {
+          "$URL": {
+            "start": {
+              "line": 196,
+              "col": 28,
+              "offset": 4266
+            },
+            "end": {
+              "line": 196,
+              "col": 55,
+              "offset": 4293
+            },
+            "abstract_content": "http://api.rubyonrails.org/"
+          }
+        },
+        "message": "This link points to a plaintext HTTP URL. Prefer an encrypted HTTPS URL if possible.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-319: Cleartext Transmission of Sensitive Information"
+          ],
+          "owasp": [
+            "A03:2017 - Sensitive Data Exposure",
+            "A02:2021 - Cryptographic Failures"
+          ],
+          "confidence": "HIGH",
+          "subcategory": [
+            "vuln"
+          ],
+          "references": [
+            "https://cwe.mitre.org/data/definitions/319.html"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/html.security.plaintext-http-link.plaintext-http-link",
+          "shortlink": "https://sg.run/RA5q",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 39193,
+              "rule_id": "AbUnNo",
+              "rv_id": 945621,
+              "url": "https://semgrep.dev/playground/r/zyTlkQN/html.security.plaintext-http-link.plaintext-http-link",
+              "version_id": "zyTlkQN"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "a470c53f449152081856ba4322d951dc760eb723e181c84338963477b44e26e21f799627c2647cf4b3e7ccfd974c3274ce489703ce8c44e9c681d23f93cdbed7_0",
+        "lines": "              <li><a href=\"http://api.rubyonrails.org/\">Rails API</a></li>",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "html.security.plaintext-http-link.plaintext-http-link",
+      "path": "public/index.html",
+      "start": {
+        "line": 197,
+        "col": 19,
+        "offset": 4332
+      },
+      "end": {
+        "line": 197,
+        "col": 72,
+        "offset": 4385
+      },
+      "extra": {
+        "metavars": {
+          "$URL": {
+            "start": {
+              "line": 197,
+              "col": 28,
+              "offset": 4341
+            },
+            "end": {
+              "line": 197,
+              "col": 57,
+              "offset": 4370
+            },
+            "abstract_content": "http://www.ruby-doc.org/core/"
+          }
+        },
+        "message": "This link points to a plaintext HTTP URL. Prefer an encrypted HTTPS URL if possible.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-319: Cleartext Transmission of Sensitive Information"
+          ],
+          "owasp": [
+            "A03:2017 - Sensitive Data Exposure",
+            "A02:2021 - Cryptographic Failures"
+          ],
+          "confidence": "HIGH",
+          "subcategory": [
+            "vuln"
+          ],
+          "references": [
+            "https://cwe.mitre.org/data/definitions/319.html"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/html.security.plaintext-http-link.plaintext-http-link",
+          "shortlink": "https://sg.run/RA5q",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 39193,
+              "rule_id": "AbUnNo",
+              "rv_id": 945621,
+              "url": "https://semgrep.dev/playground/r/zyTlkQN/html.security.plaintext-http-link.plaintext-http-link",
+              "version_id": "zyTlkQN"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "5e336fd641fe50a4d724f4dfffd0c2fd289051c856e096ac0433750f79663b0d091c48880329e86f24a81bb9b8761e90fccb25c09442b30eaeaf4f57ba609f11_0",
+        "lines": "              <li><a href=\"http://www.ruby-doc.org/core/\">Ruby core</a></li>",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "html.security.plaintext-http-link.plaintext-http-link",
+      "path": "public/index.html",
+      "start": {
+        "line": 198,
+        "col": 19,
+        "offset": 4409
+      },
+      "end": {
+        "line": 198,
+        "col": 86,
+        "offset": 4476
+      },
+      "extra": {
+        "metavars": {
+          "$URL": {
+            "start": {
+              "line": 198,
+              "col": 28,
+              "offset": 4418
+            },
+            "end": {
+              "line": 198,
+              "col": 59,
+              "offset": 4449
+            },
+            "abstract_content": "http://www.ruby-doc.org/stdlib/"
+          }
+        },
+        "message": "This link points to a plaintext HTTP URL. Prefer an encrypted HTTPS URL if possible.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-319: Cleartext Transmission of Sensitive Information"
+          ],
+          "owasp": [
+            "A03:2017 - Sensitive Data Exposure",
+            "A02:2021 - Cryptographic Failures"
+          ],
+          "confidence": "HIGH",
+          "subcategory": [
+            "vuln"
+          ],
+          "references": [
+            "https://cwe.mitre.org/data/definitions/319.html"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/html.security.plaintext-http-link.plaintext-http-link",
+          "shortlink": "https://sg.run/RA5q",
+          "semgrep.dev": {
+            "rule": {
+              "origin": "community",
+              "r_id": 39193,
+              "rule_id": "AbUnNo",
+              "rv_id": 945621,
+              "url": "https://semgrep.dev/playground/r/zyTlkQN/html.security.plaintext-http-link.plaintext-http-link",
+              "version_id": "zyTlkQN"
+            }
+          }
+        },
+        "severity": "WARNING",
+        "fingerprint": "693534c1a814a2e5e48e5aa8f4943acaa0629e523946fcc5474b2a29bbe74d2b9841b05b3ce4b514c905680c74f9dc6433da3f85461a5ec3565db47ef46f9b99_0",
+        "lines": "              <li><a href=\"http://www.ruby-doc.org/stdlib/\">Ruby standard library</a></li>",
+        "is_ignored": false,
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  ],
+  "errors": [],
+  "paths": {
+    "scanned": [
+      ".DS_Store",
+      ".gitignore",
+      ".gitlab-ci.yml",
+      "Dockerfile",
+      "Gemfile",
+      "Gemfile.lock",
+      "RAILS_README.rdoc",
+      "README.md",
+      "Rakefile",
+      "app/.DS_Store",
+      "app/assets/.DS_Store",
+      "app/assets/images/rails.png",
+      "app/assets/javascripts/application.js",
+      "app/assets/javascripts/posts.js.coffee",
+      "app/assets/javascripts/sessions.js.coffee",
+      "app/assets/javascripts/users.js.coffee",
+      "app/assets/stylesheets/application.css",
+      "app/assets/stylesheets/posts.css.scss",
+      "app/assets/stylesheets/scaffolds.css.scss",
+      "app/assets/stylesheets/sessions.css.scss",
+      "app/assets/stylesheets/users.css.scss",
+      "app/controllers/application_controller.rb",
+      "app/controllers/posts_controller.rb",
+      "app/controllers/sessions_controller.rb",
+      "app/controllers/users_controller.rb",
+      "app/helpers/application_helper.rb",
+      "app/helpers/posts_helper.rb",
+      "app/helpers/sessions_helper.rb",
+      "app/helpers/users_helper.rb",
+      "app/mailers/.gitkeep",
+      "app/models/.gitkeep",
+      "app/models/post.rb",
+      "app/models/user.rb",
+      "app/views/.DS_Store",
+      "app/views/layouts/application.html.erb",
+      "app/views/posts/_form.html.erb",
+      "app/views/posts/edit.html.erb",
+      "app/views/posts/index.html.erb",
+      "app/views/posts/new.html.erb",
+      "app/views/posts/show.html.erb",
+      "app/views/users/_form.html.erb",
+      "app/views/users/edit.html.erb",
+      "app/views/users/index.html.erb",
+      "app/views/users/new.html.erb",
+      "app/views/users/show.html.erb",
+      "bin/brakeman",
+      "bin/dev",
+      "bin/docker-entrypoint",
+      "bin/rails",
+      "bin/rake",
+      "bin/rubocop",
+      "bin/setup",
+      "bin/thrust",
+      "config/.DS_Store",
+      "config/application.rb",
+      "config/boot.rb",
+      "config/cable.yml",
+      "config/database.yml",
+      "config/environment.rb",
+      "config/environments/development.rb",
+      "config/environments/production.rb",
+      "config/environments/test.rb",
+      "config/initializers/backtrace_silencers.rb",
+      "config/initializers/inflections.rb",
+      "config/initializers/mime_types.rb",
+      "config/initializers/secret_token.rb",
+      "config/initializers/session_store.rb",
+      "config/initializers/wrap_parameters.rb",
+      "config/locales/en.yml",
+      "config/routes.rb",
+      "config/storage.yml",
+      "config.ru",
+      "db/cable_schema.rb",
+      "db/migrate/20120920170055_create_users.rb",
+      "db/migrate/20120920172409_add_password_to_users.rb",
+      "db/migrate/20120920181624_add_token_to_users.rb",
+      "db/migrate/20120920194433_create_posts.rb",
+      "db/schema.rb",
+      "db/seeds.rb",
+      "doc/README_FOR_APP",
+      "lib/.DS_Store",
+      "lib/assets/.gitkeep",
+      "lib/tasks/.gitkeep",
+      "log/.gitkeep",
+      "public/404.html",
+      "public/422.html",
+      "public/500.html",
+      "public/favicon.ico",
+      "public/index.html",
+      "public/robots.txt",
+      "run_scanners.sh",
+      "script/rails",
+      "storage/.keep",
+      "storage/development.sqlite3",
+      "tmp.txt"
+    ]
+  },
+  "time": {
+    "rules": [],
+    "rules_parse_time": 8.162701845169067,
+    "profiling_times": {
+      "config_time": 9.728828907012939,
+      "core_time": 10.840274810791016,
+      "ignores_time": 0.002012014389038086,
+      "total_time": 20.571808099746704
+    },
+    "parsing_time": {
+      "total_time": 0.08271169662475586,
+      "per_file_time": {
+        "mean": 0.0017231603463490801,
+        "std_dev": 0.000006289716679831591
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_files": []
+    },
+    "scanning_time": {
+      "total_time": 0.42040228843688965,
+      "per_file_time": {
+        "mean": 0.0017444078358377151,
+        "std_dev": 0.000025927140154548392
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_files": []
+    },
+    "matching_time": {
+      "total_time": 0.10880804061889648,
+      "per_file_and_rule_time": {
+        "mean": 0.000283354272445043,
+        "std_dev": 5.695642632700143E-7
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_rules_on_files": []
+    },
+    "tainting_time": {
+      "total_time": 0.020626068115234375,
+      "per_def_and_rule_time": {
+        "mean": 0.000056978088716117056,
+        "std_dev": 5.522205282699617E-9
+      },
+      "very_slow_stats": {
+        "time_ratio": 0.0,
+        "count_ratio": 0.0
+      },
+      "very_slow_rules_on_defs": []
+    },
+    "targets": [],
+    "total_bytes": 0,
+    "max_memory_bytes": 8782528640
+  },
+  "engine_requested": "OSS",
+  "interfile_languages_used": [],
+  "skipped_rules": []
+}

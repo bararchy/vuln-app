@@ -1,0 +1,655 @@
+{
+  "issues": [
+    {
+      "id": "e6d84b3e-ef44-40a8-b4f3-403edf80df4b",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:27.217Z",
+      "classification": {
+        "id": "CWE-256",
+        "name": "Plaintext Storage of a Password",
+        "description": "Storing a password in plaintext may result in a system compromise."
+      },
+      "location": {
+        "file": {
+          "name": "schema.rb",
+          "language": "ruby",
+          "path": "db/schema.rb"
+        },
+        "line_number": 27,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "6f3ef4d4-b5da-4560-b293-4adc3e9e6e0e",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:27.633Z",
+      "classification": {
+        "id": "CWE-287",
+        "name": "Improper Authentication",
+        "description": "When an actor claims to have a given identity, the product does not prove or insufficiently proves that the claim is correct."
+      },
+      "location": {
+        "file": {
+          "name": "application_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/application_controller.rb"
+        },
+        "line_number": 14,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "69389126-5dfe-4ae4-b402-4e5a2aa11a15",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:28.797Z",
+      "classification": {
+        "id": "CWE-319",
+        "name": "Cleartext Transmission of Sensitive Information",
+        "description": "The product transmits sensitive or security-critical data in cleartext in a communication channel that can be sniffed by unauthorized actors."
+      },
+      "location": {
+        "file": {
+          "name": "production.rb",
+          "language": "ruby",
+          "path": "vendor/config/environments/production.rb"
+        },
+        "line_number": 30,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "08bd4c24-3151-4a13-8b94-e74540a1a8ab",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:29.715Z",
+      "classification": {
+        "id": "CWE-639",
+        "name": "Authorization Bypass Through User-Controlled Key",
+        "description": "The system's authorization functionality does not prevent one user from gaining access to another user's data or record by modifying the key value identifying the data."
+      },
+      "location": {
+        "file": {
+          "name": "users_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/users_controller.rb"
+        },
+        "line_number": 21,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "05e36117-4d9e-4c20-829b-839e78263c15",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:30.008Z",
+      "classification": {
+        "id": "CWE-639",
+        "name": "Authorization Bypass Through User-Controlled Key",
+        "description": "The system's authorization functionality does not prevent one user from gaining access to another user's data or record by modifying the key value identifying the data."
+      },
+      "location": {
+        "file": {
+          "name": "users_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/users_controller.rb"
+        },
+        "line_number": 21,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "fdd54988-649b-4aae-b9db-d408b115d6c0",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:30.576Z",
+      "classification": {
+        "id": "CWE-287",
+        "name": "Improper Authentication",
+        "description": "When an actor claims to have a given identity, the product does not prove or insufficiently proves that the claim is correct."
+      },
+      "location": {
+        "file": {
+          "name": "application_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/application_controller.rb"
+        },
+        "line_number": 15,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "718ebdbc-811d-4937-a59c-c85ee8138698",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:32.723Z",
+      "classification": {
+        "id": "CWE-639",
+        "name": "Authorization Bypass Through User-Controlled Key",
+        "description": "The system's authorization functionality does not prevent one user from gaining access to another user's data or record by modifying the key value identifying the data."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/posts_controller.rb"
+        },
+        "line_number": 98,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "aadb9c17-bec2-407c-8410-2b2f0b9a0556",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:31.925Z",
+      "classification": {
+        "id": "CWE-89",
+        "name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+        "description": "The product constructs all or part of an SQL command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/posts_controller.rb"
+        },
+        "line_number": 56,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "f4ccf31d-f5cc-4e17-9058-e3640b67ce05",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:24.561Z",
+      "classification": {
+        "id": "CWE-89",
+        "name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+        "description": "The product constructs all or part of an SQL command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component."
+      },
+      "location": {
+        "file": {
+          "name": "sessions_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/sessions_controller.rb"
+        },
+        "line_number": 5,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "dfb4110a-6feb-44ef-903e-c0cedd9c622d",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:27.658Z",
+      "classification": {
+        "id": "CWE-287",
+        "name": "Improper Authentication",
+        "description": "When an actor claims to have a given identity, the product does not prove or insufficiently proves that the claim is correct."
+      },
+      "location": {
+        "file": {
+          "name": "application_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/application_controller.rb"
+        },
+        "line_number": 28,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "8b4719c1-e760-4489-b292-9846fa5d30c8",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:27.734Z",
+      "classification": {
+        "id": "CWE-89",
+        "name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+        "description": "The product constructs all or part of an SQL command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component."
+      },
+      "location": {
+        "file": {
+          "name": "sessions_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/sessions_controller.rb"
+        },
+        "line_number": 5,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "989abf3c-0eb4-463b-814b-404f7f9df465",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:30.555Z",
+      "classification": {
+        "id": "CWE-287",
+        "name": "Improper Authentication",
+        "description": "When an actor claims to have a given identity, the product does not prove or insufficiently proves that the claim is correct."
+      },
+      "location": {
+        "file": {
+          "name": "application_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/application_controller.rb"
+        },
+        "line_number": 28,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "169546de-ef5b-48a6-81b1-ca87cab4c3df",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:31.876Z",
+      "classification": {
+        "id": "CWE-639",
+        "name": "Authorization Bypass Through User-Controlled Key",
+        "description": "The system's authorization functionality does not prevent one user from gaining access to another user's data or record by modifying the key value identifying the data."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/posts_controller.rb"
+        },
+        "line_number": 18,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "e0ad0608-9d8d-457d-82c6-1ed244477cd0",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:31.899Z",
+      "classification": {
+        "id": "CWE-639",
+        "name": "Authorization Bypass Through User-Controlled Key",
+        "description": "The system's authorization functionality does not prevent one user from gaining access to another user's data or record by modifying the key value identifying the data."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "vendor/app/controllers/posts_controller.rb"
+        },
+        "line_number": 89,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "130f9c31-592e-4373-9288-7f9871b9bb06",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:32.662Z",
+      "classification": {
+        "id": "CWE-89",
+        "name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+        "description": "The product constructs all or part of an SQL command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/posts_controller.rb"
+        },
+        "line_number": 54,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "628a660e-01e4-4ba2-b8ef-3bc66ad69e54",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "HI",
+      "created_at": "2025-08-28T00:34:32.709Z",
+      "classification": {
+        "id": "CWE-639",
+        "name": "Authorization Bypass Through User-Controlled Key",
+        "description": "The system's authorization functionality does not prevent one user from gaining access to another user's data or record by modifying the key value identifying the data."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/posts_controller.rb"
+        },
+        "line_number": 21,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    },
+    {
+      "id": "2f58fed2-aa2f-4e88-97a2-b97986daadef",
+      "scan_id": null,
+      "status": "accepted_risk",
+      "urgency": "CR",
+      "created_at": "2025-08-28T00:34:32.713Z",
+      "classification": {
+        "id": "CWE-89",
+        "name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+        "description": "The product constructs all or part of an SQL command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component."
+      },
+      "location": {
+        "file": {
+          "name": "posts_controller.rb",
+          "language": "ruby",
+          "path": "app/controllers/posts_controller.rb"
+        },
+        "line_number": 81,
+        "project": {
+          "name": "dvra-sast-test-project",
+          "branch": "master",
+          "git_sha": "9ebc8afe8b84c0ca232187ea262526382027c2bb"
+        }
+      },
+      "details": null,
+      "auto_triage": {
+        "false_positive_detection": {
+          "status": "valid",
+          "reasoning": null
+        }
+      },
+      "auto_fix_suggestion": {
+        "id": null,
+        "status": "fix_available",
+        "patch": null,
+        "full_code": null
+      }
+    }
+  ],
+  "sca_issues": [],
+  "report": {
+    "HI": 8,
+    "CR": 9
+  }
+}
