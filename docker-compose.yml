@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    environment:
+      - RAILS_ENV=development
+      - RACK_ENV=development
+    stdin_open: true
+    tty: true
+    command: >
+      sh -c "bundle install &&
+             bundle exec rake db:create db:migrate &&
+             bundle exec rails server -b 0.0.0.0"
+
+volumes:
+  bundle_cache:

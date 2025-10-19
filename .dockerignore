@@ -1,0 +1,40 @@
+# Git files
+.git
+.gitignore
+
+# Logs
+log/*
+tmp/*
+*.log
+
+# Database files
+*.sqlite3
+db/*.sqlite3
+
+# Environment files
+.env
+.env.*
+
+# Dependencies
+node_modules/
+vendor/bundle/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test and coverage
+coverage/
+test/tmp/
+test/version_tmp/
+
+# Documentation
+doc/
+*.rdoc
+
+# Results from scanners
+results/
