@@ -22,10 +22,6 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: Ensure environment files are present
-        run: |
-          test -f .env || { echo ".env file is missing"; exit 1; }
-
       - name: Start application
         run: |
           docker compose up --wait
