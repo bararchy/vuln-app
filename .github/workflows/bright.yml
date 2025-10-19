@@ -26,13 +26,6 @@ jobs:
         run: |
           bundle install
 
-      - name: Ensure .env file exists
-        run: |
-          if [ ! -f .env ]; then
-            echo "Missing .env file"
-            exit 1
-          fi
-
       - name: Start application
         run: |
           rails server &
