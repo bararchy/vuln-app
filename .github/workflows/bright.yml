@@ -17,10 +17,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Ensure .env files are present
-        run: |
-          test -f .env || { echo ".env file is missing"; exit 1; }
-
       - name: Start application
         run: |
           docker compose up --wait
