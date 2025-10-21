@@ -33,6 +33,7 @@ RUN bundle exec rake assets:precompile RAILS_ENV=production || true
 # Setup database
 RUN bundle exec rake db:create RAILS_ENV=development || true
 RUN bundle exec rake db:migrate RAILS_ENV=development || true
+RUN bundle exec rake db:seed RAILS_ENV=development || true
 
 # Expose port 3000
 EXPOSE 3000
