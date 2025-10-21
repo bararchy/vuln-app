@@ -16,8 +16,8 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   # GET /posts/1.xml
   def show
-    ### APPSEC Vuln 5: *Maybe* Unscoped find IDOR?
     ### (posts are probably public, but does the scanner know that...?)
+    ### APPSEC Vuln 5: *Maybe* Unscoped find IDOR?
     @post = Post.find(params[:id])
 
     respond_to do |format|
@@ -51,8 +51,9 @@ class PostsController < ApplicationController
     "WHERE id = #{params[:id]}"
   end
 
+  ### APPSEC Vuln 7: UnscopedFind Delete IDOR with parent class accessor and hash reassignment
   def meu1468
-    ### APPSEC Vuln 6: UnscopedFind Write IDOR, func indirect SQLi
+    ### APPSEC Vuln 6: sanitize_sql_array SQLi false positive (MEU-1468)
     # curl -X PUT 'http://127.0.0.1:3000/posts/%27?meu=1' -H 'X-Authentication-Token: ...'
     sql = <<-SQL
       SELECT *
@@ -72,11 +73,11 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1.json
   # PATCH/PUT /posts/1.xml
   def update
-    if params[:meu].eq 1
+    if params[:meu] == "1"
       meu1468
     end
 
-    ### APPSEC Vuln 10: UnscopedFind Write IDOR, func indirect SQLi
+    ### APPSEC Vuln 10: SQLi via callee interpolation
     # curl -X PUT 'http://127.0.0.1:3000/posts/%27' -H 'X-Authentication-Token: ...'
     @post = Post.find_by_sql(get_unsafe_interpolated_query_string).first
 
@@ -94,7 +95,6 @@ class PostsController < ApplicationController
   # DELETE /posts/1.json
   # DELETE /posts/1.xml
   def destroy
-    ### APPSEC Vuln 7: UnscopedFind Delete IDOR with parent class accessor and hash reassignment
     @post = Post.find(get_id)
     @post.destroy
 
