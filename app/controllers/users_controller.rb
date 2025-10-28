@@ -32,7 +32,8 @@ class UsersController < ApplicationController
       end
     rescue => e
       logger.error "Error fetching user: #{e.message}"
-      render json: { error: "An error occurred" }, status: :internal_server_error
+      # Changed error message to be more generic to prevent full path disclosure
+      render json: { error: "An error occurred while processing your request." }, status: :internal_server_error
     end
   end
 
