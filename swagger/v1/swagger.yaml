@@ -1,0 +1,382 @@
+---
+openapi: 3.0.1
+info:
+  title: Vulnerable App API V1
+  version: v1
+  description: |
+    This is a deliberately vulnerable application API for security testing and demonstration purposes.
+    
+    **Authentication**: Use the `X-Authentication-Token` header with a valid user token.
+    
+    **Default Credentials**:
+    - Admin: admin@vulnerable.app / admin123
+    - User: user@vulnerable.app / user123
+    - Test: test@vulnerable.app / test123
+    
+    **Warning**: This application contains intentional security vulnerabilities for educational purposes.
+servers:
+  - url: http://localhost:3000
+    description: Development server
+paths:
+  /sessions:
+    post:
+      summary: Create session (login)
+      description: Authenticate a user and receive an authentication token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@vulnerable.app
+                password:
+                  type: string
+                  format: password
+                  example: user123
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 5f9914789c7d603144b323fc69ae1695
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid email or password
+  /users:
+    post:
+      summary: Create a new user
+      description: Register a new user account
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      description: Retrieve a specific user's information
+      tags:
+        - Users
+      security:
+        - ApiTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+  /posts:
+    get:
+      summary: List all posts
+      description: Retrieve a list of all posts
+      tags:
+        - Posts
+      security:
+        - ApiTokenAuth: []
+      responses:
+        '200':
+          description: List of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Create a new post
+      description: Create a new post entry
+      tags:
+        - Posts
+      security:
+        - ApiTokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+  /posts/{id}:
+    get:
+      summary: Get post by ID
+      description: Retrieve a specific post
+      tags:
+        - Posts
+      security:
+        - ApiTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      responses:
+        '200':
+          description: Post found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found
+    put:
+      summary: Update a post
+      description: Update an existing post
+      tags:
+        - Posts
+      security:
+        - ApiTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+        - name: meu
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Special MEU-1468 test parameter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '204':
+          description: Post updated successfully
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+    patch:
+      summary: Partially update a post
+      description: Update specific fields of an existing post
+      tags:
+        - Posts
+      security:
+        - ApiTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '204':
+          description: Post updated successfully
+        '422':
+          description: Validation error
+    delete:
+      summary: Delete a post
+      description: Remove a post from the system
+      tags:
+        - Posts
+      security:
+        - ApiTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Post ID
+      responses:
+        '204':
+          description: Post deleted successfully
+        '404':
+          description: Post not found
+components:
+  securitySchemes:
+    ApiTokenAuth:
+      type: apiKey
+      in: header
+      name: X-Authentication-Token
+      description: |
+        User authentication token obtained from /sessions endpoint.
+        Use this token in the X-Authentication-Token header for authenticated requests.
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          format: email
+          example: user@vulnerable.app
+        admin:
+          type: boolean
+          example: false
+        token:
+          type: string
+          example: 5f9914789c7d603144b323fc69ae1695
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    UserInput:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+              example: newuser@example.com
+            password:
+              type: string
+              format: password
+              example: password123
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: My First Post
+        body:
+          type: string
+          example: This is the content of my post
+        user_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    PostInput:
+      type: object
+      properties:
+        post:
+          type: object
+          properties:
+            title:
+              type: string
+              example: New Post Title
+            body:
+              type: string
+              example: Post content goes here
+            user_id:
+              type: integer
+              example: 1

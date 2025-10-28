@@ -29,5 +29,8 @@ module VulnerableApp
 
     # For compatibility with older Rails apps - allows mass assignment vulnerabilities
     config.action_controller.permit_all_parameters = true
+
+    # Remove CSP middleware entirely for this vulnerable app
+    config.middleware.delete ActionDispatch::ContentSecurityPolicy::Middleware
   end
 end
