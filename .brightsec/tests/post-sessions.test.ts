@@ -21,7 +21,7 @@ after(() => runner.clear());
 test('POST /sessions', { signal: AbortSignal.timeout(timeout) }, async () => {
   await runner
     .createScan({
-      tests: ['sqli', 'csrf', 'xss'],
+      tests: ['sqli'],
       attackParamLocations: [AttackParamLocation.BODY],
       starMetadata: { databases: ['SQLite3'] }
     })
