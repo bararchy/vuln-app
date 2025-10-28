@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
       puts "Authenticated as user #{user.id}"
       cookies[:user_id] = user.id
     else
-      render status: 400
+      render json: { error: "Authentication required" }, status: 400 and return
     end
   end
 end
