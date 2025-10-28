@@ -15,7 +15,7 @@ config/initializers/secret_token.rb:2:          ### APPSEC Vuln 11: Plaintext pa
 ```
 
 
-Executon:
+Execution:
 ```
 ./run_scanners.sh
 ```
