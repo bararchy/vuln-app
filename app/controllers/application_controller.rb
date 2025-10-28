@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :reassign_params
 
+  # Disable CSRF protection for API requests (this is a vulnerable app for testing)
+  skip_before_action :verify_authenticity_token
 
   #protect_from_forgery
   protected
