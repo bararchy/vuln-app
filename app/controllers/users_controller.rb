@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user, only: [:show]
+  before_action :authenticate_user, only: [:show]
+
   # POST /users
   # POST /users.json
   # POST /users.xml
@@ -19,14 +20,19 @@ class UsersController < ApplicationController
 
   ### APPSEC Vuln 2: Unscoped Find/Read IDOR
   def show
-    puts "Returning data for user #{params[:id]}"
-    @user = User.find_by(id: params[:id])
-    respond_to do |format|
-      if @user
-        format.json { render json: @user, status: :ok }
-      else
-        format.json { render json: { error: "User not found" }, status: :not_found }
+    begin
+      puts "Returning data for user #{params[:id]}"
+      @user = User.find_by(id: params[:id])
+      respond_to do |format|
+        if @user
+          format.json { render json: @user, status: :ok }
+        else
+          format.json { render json: { error: "User not found" }, status: :not_found }
+        end
       end
+    rescue => e
+      logger.error "Error fetching user: #{e.message}"
+      render json: { error: "An error occurred" }, status: :internal_server_error
     end
   end
 
