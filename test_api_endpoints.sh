@@ -304,13 +304,13 @@ fi
 # Test 14: Swagger UI accessibility
 # ============================================
 print_test "GET /api-docs - Swagger UI"
-RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "$BASE_URL/api-docs")
+RESPONSE=$(curl -s -w "\n%{http_code}" -L -X GET "$BASE_URL/api-docs")
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 BODY=$(echo "$RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" = "200" ]; then
-    if echo "$BODY" | grep -q "swagger"; then
+    if echo "$BODY" | grep -iq "swagger"; then
         pass "Swagger UI is accessible"
     else
         fail "Got 200 but doesn't look like Swagger UI"

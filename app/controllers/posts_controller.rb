@@ -44,7 +44,7 @@ class PostsController < ApplicationController
   end
 
   def get_unsafe_interpolated_query_string
-    "SELECT * FROM users WHERE id = #{params[:id]}"
+    "SELECT * FROM posts WHERE id = #{params[:id]}"
   end
 
   def get_unsafe_interpolated_where
@@ -79,15 +79,16 @@ class PostsController < ApplicationController
 
     ### APPSEC Vuln 10: SQLi via callee interpolation
     # curl -X PUT 'http://127.0.0.1:3000/posts/%27' -H 'X-Authentication-Token: ...'
-    @post = Post.find_by_sql(get_unsafe_interpolated_query_string).first
+    result = Post.find_by_sql(get_unsafe_interpolated_query_string)
+    @post = result.first if result.any?
 
     respond_to do |format|
-      if @post.update_attributes(post_params)
+      if @post && @post.update_attributes(post_params)
         format.json { head :no_content }
         format.xml  { head :no_content }
       else
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-        format.xml  { render xml: @post.errors, status: :unprocessable_entity }
+        format.json { render json: (@post ? @post.errors : { error: "Post not found" }), status: :unprocessable_entity }
+        format.xml  { render xml: (@post ? @post.errors : { error: "Post not found" }), status: :unprocessable_entity }
       end
     end
   end
