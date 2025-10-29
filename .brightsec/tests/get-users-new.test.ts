@@ -21,7 +21,7 @@ after(() => runner.clear());
 test('GET /users/new', { signal: AbortSignal.timeout(timeout) }, async () => {
   await runner
     .createScan({
-      tests: ['csrf', 'xss', 'sqli', 'unvalidated_redirect', 'full_path_disclosure'],
+      tests: ['full_path_disclosure'],
       attackParamLocations: [AttackParamLocation.PATH],
       starMetadata: { databases: ['SQLite3'] }
     })

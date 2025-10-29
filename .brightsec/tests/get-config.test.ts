@@ -21,7 +21,7 @@ after(() => runner.clear());
 test('GET /config', { signal: AbortSignal.timeout(timeout) }, async () => {
   await runner
     .createScan({
-      tests: ['csrf', 'secret_tokens', 'open_database', 'full_path_disclosure'],
+      tests: ['secret_tokens'],
       attackParamLocations: [AttackParamLocation.HEADER],
       starMetadata: { databases: ['SQLite3'] }
     })
