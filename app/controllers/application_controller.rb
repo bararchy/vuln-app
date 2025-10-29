@@ -45,4 +45,14 @@ class ApplicationController < ActionController::Base
       render json: { error: "Authentication required" }, status: 400 and return
     end
   end
+
+  # Add a rescue_from to handle exceptions and prevent full path disclosure
+  rescue_from StandardError do |exception|
+    # Log the exception with full details for internal review
+    logger.error exception.message
+    logger.error exception.backtrace.join("\n")
+
+    # Render a generic error message to the user
+    render json: { error: "An unexpected error occurred. Please try again later." }, status: :internal_server_error
+  end
 end
