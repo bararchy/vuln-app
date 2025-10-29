@@ -57,7 +57,7 @@ This application contains the following intentional security vulnerabilities:
 
 | Location | Vulnerability |
 |----------|---------------|
-| `config/initializers/secret_token.rb:1` | **Vuln 1:** Hardcoded secret |
+| `config/initializers/secret_token.rb:1` | **Vuln 1:** Hardcoded secret (Google API Key) |
 | `app/controllers/users_controller.rb:20` | **Vuln 2:** Unscoped Find/Read IDOR |
 | `app/controllers/users_controller.rb:29` | **Vuln 3:** Mass Assignment |
 | `app/controllers/sessions_controller.rb:4` | **Vuln 4:** SQLi via parent class method with hash reassignment |
@@ -68,6 +68,7 @@ This application contains the following intentional security vulnerabilities:
 | `app/views/posts/show.html.erb:6` | **Vuln 9:** XSS via html_safe |
 | `app/controllers/posts_controller.rb:81` | **Vuln 10:** SQLi via callee interpolation |
 | `config/initializers/secret_token.rb:2` | **Vuln 11:** Plaintext password storage |
+| `app/controllers/application_controller.rb:11` | **Vuln 12:** Information disclosure - `/config` endpoint exposes secrets |
 
 ## 🔍 Running Security Scans
 
@@ -76,6 +77,16 @@ Execute all security scanners:
 ```bash
 ./run_scanners.sh
 ```
+
+## 🧪 Running Tests
+
+Run the API endpoint tests:
+
+```bash
+./test_api_endpoints.sh
+```
+
+This will test all API endpoints including authentication, CRUD operations, and verify that the intentional vulnerabilities are present.
 
 ## 📊 SAST Tool Comparison
 

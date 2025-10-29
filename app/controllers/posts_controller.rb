@@ -83,7 +83,7 @@ class PostsController < ApplicationController
     @post = result.first if result.any?
 
     respond_to do |format|
-      if @post && @post.update_attributes(post_params)
+      if @post && @post.update(post_params)
         format.json { head :no_content }
         format.xml  { head :no_content }
       else

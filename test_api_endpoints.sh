@@ -339,6 +339,29 @@ else
 fi
 
 # ============================================
+# Test 16: Config endpoint - Information disclosure (Vuln 12)
+# ============================================
+print_test "GET /config - Information disclosure vulnerability"
+RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "$BASE_URL/config")
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" = "200" ]; then
+    if echo "$BODY" | grep -q "secret_token"; then
+        if echo "$BODY" | grep -q "AIzaSy"; then
+            pass "Config endpoint leaks secret token (Google API key detected)"
+        else
+            pass "Config endpoint leaks secret token"
+        fi
+    else
+        fail "Got 200 but no secret_token in response: $BODY"
+    fi
+else
+    fail "Expected 200, got $HTTP_CODE. Response: $BODY"
+fi
+
+# ============================================
 # Summary
 # ============================================
 echo -e "\n=========================================="
