@@ -55,20 +55,23 @@ docker-compose exec web bash
 
 This application contains the following intentional security vulnerabilities:
 
-| Location | Vulnerability |
-|----------|---------------|
-| `config/initializers/secret_token.rb:1` | **Vuln 1:** Hardcoded secret (Google API Key) |
-| `app/controllers/users_controller.rb:20` | **Vuln 2:** Unscoped Find/Read IDOR |
-| `app/controllers/users_controller.rb:29` | **Vuln 3:** Mass Assignment |
-| `app/controllers/sessions_controller.rb:4` | **Vuln 4:** SQLi via parent class method with hash reassignment |
-| `app/controllers/posts_controller.rb:21` | **Vuln 5:** *Maybe* Unscoped find IDOR? |
-| `app/controllers/posts_controller.rb:69` | **Vuln 6:** sanitize_sql_array SQLi false positive (MEU-1468) |
-| `app/controllers/posts_controller.rb:65` | **Vuln 7:** UnscopedFind Delete IDOR with parent class accessor and hash reassignment |
-| `app/controllers/application_controller.rb:15` | **Vuln 8:** Cookie tampering ATO |
-| `app/views/posts/show.html.erb:6` | **Vuln 9:** XSS via html_safe |
-| `app/controllers/posts_controller.rb:81` | **Vuln 10:** SQLi via callee interpolation |
-| `config/initializers/secret_token.rb:2` | **Vuln 11:** Plaintext password storage |
-| `app/controllers/application_controller.rb:11` | **Vuln 12:** Information disclosure - `/config` endpoint exposes secrets |
+| Location | Vulnerability | Exploitable at Runtime? |
+|----------|---------------|------------------------|
+| `config/initializers/secret_token.rb:1` | **Vuln 1:** Hardcoded secret (Google API Key) | ✅ via `/config` |
+| `app/controllers/users_controller.rb:20` | **Vuln 2:** Unscoped Find/Read IDOR | ✅ via `/users/:id` |
+| `app/controllers/users_controller.rb:29` | **Vuln 3:** Mass Assignment | ✅ via `POST /users` |
+| `app/controllers/sessions_controller.rb:4` | **Vuln 4:** SQLi via parent class method with hash reassignment | ✅ via `POST /sessions` |
+| `app/controllers/posts_controller.rb:21` | **Vuln 5:** *Maybe* Unscoped find IDOR? | ✅ via `/posts/:id` |
+| `app/controllers/posts_controller.rb:69` | **Vuln 6:** sanitize_sql_array SQLi false positive (MEU-1468) | ✅ via `PUT /posts/:id?meu=1` |
+| `app/controllers/posts_controller.rb:65` | **Vuln 7:** UnscopedFind Delete IDOR with parent class accessor and hash reassignment | ✅ via `DELETE /posts/:id` |
+| `app/controllers/application_controller.rb:27` | **Vuln 8:** Cookie tampering ATO | ✅ Cookie-based |
+| `app/controllers/posts_controller.rb:7` | **Vuln 9:** XSS via html_safe | ✅ via `POST /posts/render_html` |
+| `app/controllers/posts_controller.rb:81` | **Vuln 10:** SQLi via callee interpolation | ✅ via `PUT /posts/:id` |
+| `app/models/user.rb:2` | **Vuln 11:** Plaintext password storage | ✅ via `/users/:id/credentials` |
+| `app/controllers/application_controller.rb:11` | **Vuln 12:** Information disclosure - `/config` endpoint exposes secrets | ✅ via `/config` |
+| `config/initializers/cors.rb` | **Vuln 13:** Overly permissive CORS (`origins '*'`) | 🔍 SAST-only |
+| `config/initializers/content_security_policy.rb` | **Vuln 14:** CSP disabled/permissive (`unsafe-inline`, `unsafe-eval`) | 🔍 SAST-only |
+| `app/controllers/application_controller.rb:5` | **Vuln 15:** CSRF protection disabled | ✅ via `POST /users/:id/transfer_ownership` |
 
 ## 🔍 Running Security Scans
 

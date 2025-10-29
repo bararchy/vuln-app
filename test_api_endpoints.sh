@@ -362,6 +362,77 @@ else
 fi
 
 # ============================================
+# Test 17: XSS via html_safe (Vuln 9)
+# ============================================
+print_test "POST /posts/render_html - XSS vulnerability"
+RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/posts/render_html" \
+  -H 'Content-Type: application/json' \
+  -H "X-Authentication-Token: $TOKEN" \
+  -d '{
+    "html": "<script>alert(\"XSS\")</script><h1>Vulnerable!</h1>"
+  }')
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" = "200" ]; then
+    if echo "$BODY" | grep -q "<script>alert"; then
+        pass "XSS vulnerability confirmed - unsafe HTML rendered directly"
+    else
+        fail "Got 200 but HTML not rendered unsafely: $BODY"
+    fi
+else
+    fail "Expected 200, got $HTTP_CODE. Response: $BODY"
+fi
+
+# ============================================
+# Test 18: Plaintext password exposure (Vuln 11)
+# ============================================
+print_test "GET /users/$USER_ID/credentials - Plaintext password exposure"
+RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "$BASE_URL/users/$USER_ID/credentials.json" \
+  -H "X-Authentication-Token: $TOKEN")
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" = "200" ]; then
+    if echo "$BODY" | grep -q "password"; then
+        if echo "$BODY" | grep -q "testpass123"; then
+            pass "Plaintext password exposure confirmed"
+        else
+            pass "Password field present in response"
+        fi
+    else
+        fail "Got 200 but no password in response: $BODY"
+    fi
+else
+    fail "Expected 200, got $HTTP_CODE. Response: $BODY"
+fi
+
+# ============================================
+# Test 19: CSRF vulnerability (Vuln 15)
+# ============================================
+print_test "POST /users/$USER_ID/transfer_ownership - CSRF vulnerability"
+RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/users/$USER_ID/transfer_ownership.json" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "new_owner_email": "attacker@evil.com"
+  }')
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" = "200" ]; then
+    if echo "$BODY" | grep -q "CSRF"; then
+        pass "CSRF vulnerability confirmed - no token required"
+    else
+        pass "State-changing operation succeeded without CSRF token"
+    fi
+else
+    fail "Expected 200, got $HTTP_CODE. Response: $BODY"
+fi
+
+# ============================================
 # Summary
 # ============================================
 echo -e "\n=========================================="

@@ -1,6 +1,16 @@
 class PostsController < ApplicationController
   before_action :authenticate_user
 
+  ### APPSEC Vuln 9: XSS via html_safe (runtime exploitable)
+  # POST /posts/render_html
+  def render_html
+    # Render user-provided HTML unsafely
+    user_html = params[:html] || params[:content] || ""
+    
+    # Return as text/html to demonstrate real XSS vulnerability
+    render html: user_html.html_safe, content_type: 'text/html'
+  end
+
   # GET /posts.json
   # GET /posts.xml
   def index

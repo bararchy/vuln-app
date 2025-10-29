@@ -6,8 +6,18 @@ VulnerableApp::Application.routes.draw do
   # Information disclosure endpoint
   get '/config', to: 'application#show_config'
 
-  resources :posts
+  resources :posts do
+    collection do
+      post 'render_html'
+    end
+  end
 
-  resources :users
+  resources :users do
+    member do
+      get 'credentials'
+      post 'transfer_ownership'
+    end
+  end
+  
   resources :sessions, only: :create
 end
