@@ -17,22 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 8.0.2
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22.x
-
-      - name: Ensure .env file exists
-        run: |
-          if [ ! -f .env ]; then
-            echo "Missing .env file!"
-            exit 1
-          fi
 
       - name: Start application
         run: |
