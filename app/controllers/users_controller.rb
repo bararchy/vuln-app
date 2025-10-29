@@ -6,27 +6,24 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    respond_to do |format|
-      if @user.save
-        format.json { render json: @user, status: :created, location: @user }
-        format.xml  { render xml: @user, status: :created, location: @user }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-        format.xml  { render xml: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      render json: @user, status: :created, location: @user
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   ### APPSEC Vuln 2: Unscoped Find/Read IDOR
+  # Application is seeded with user IDs 1 to 3
   def show
     puts "Returning data for user #{params[:id]}"
     @user = User.find_by(id: params[:id])
-    respond_to do |format|
-      if @user
-        format.json { render json: @user, status: :ok }
-      else
-        format.json { render json: { error: "User not found" }, status: :not_found }
-      end
+    
+    # Always return JSON regardless of Accept header
+    if @user
+      render json: @user, status: :ok
+    else
+      render json: { error: "User not found" }, status: :not_found
     end
   end
 
@@ -34,19 +31,18 @@ class UsersController < ApplicationController
   # GET /users/:id/credentials
   def credentials
     @user = User.find_by(id: params[:id])
-    respond_to do |format|
-      if @user
-        # Exposing plaintext password stored in database
-        format.json { render json: { 
-          id: @user.id,
-          email: @user.email,
-          password: @user.password,  # Plaintext password!
-          password_digest: @user.password_digest,
-          token: @user.token
-        }, status: :ok }
-      else
-        format.json { render json: { error: "User not found" }, status: :not_found }
-      end
+    
+    if @user
+      # Exposing plaintext password stored in database
+      render json: { 
+        id: @user.id,
+        email: @user.email,
+        password: @user.password,  # Plaintext password!
+        password_digest: @user.password_digest,
+        token: @user.token
+      }, status: :ok
+    else
+      render json: { error: "User not found" }, status: :not_found
     end
   end
 
@@ -56,19 +52,17 @@ class UsersController < ApplicationController
     @user = User.find_by(id: params[:id])
     new_owner_email = params[:new_owner_email]
     
-    respond_to do |format|
-      if @user && new_owner_email
-        # Simulate transferring ownership/admin rights
-        # This is vulnerable to CSRF since skip_before_action :verify_authenticity_token is enabled
-        format.json { render json: { 
-          message: "Ownership transferred",
-          previous_owner: @user.email,
-          new_owner: new_owner_email,
-          warning: "This endpoint is vulnerable to CSRF!"
-        }, status: :ok }
-      else
-        format.json { render json: { error: "Invalid request" }, status: :bad_request }
-      end
+    if @user && new_owner_email
+      # Simulate transferring ownership/admin rights
+      # This is vulnerable to CSRF since skip_before_action :verify_authenticity_token is enabled
+      render json: { 
+        message: "Ownership transferred",
+        previous_owner: @user.email,
+        new_owner: new_owner_email,
+        warning: "This endpoint is vulnerable to CSRF!"
+      }, status: :ok
+    else
+      render json: { error: "Invalid request" }, status: :bad_request
     end
   end
 

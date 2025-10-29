@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# This is the Rails 8 stable release series, this isn't the Ruby version.
+# You will want Ruby 3.2 or newer to run this version of Rails.
 gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
