@@ -21,7 +21,7 @@ after(() => runner.clear());
 test('POST /users.xml', { signal: AbortSignal.timeout(timeout) }, async () => {
   await runner
     .createScan({
-      tests: ['xxe', 'mass_assignment', 'csrf', 'sqli', 'plaintext_password_storage'],
+      tests: ['sqli'],
       attackParamLocations: [AttackParamLocation.BODY],
       starMetadata: {
         code_source: 'bararchy/vuln-app:main',

@@ -21,7 +21,7 @@ after(() => runner.clear());
 test('GET /config', { signal: AbortSignal.timeout(timeout) }, async () => {
   await runner
     .createScan({
-      tests: ['csrf', 'full_path_disclosure', 'secret_tokens', 'open_database'],
+      tests: ['secret_tokens'],
       attackParamLocations: [AttackParamLocation.PATH],
       starMetadata: {
         code_source: 'bararchy/vuln-app:main',

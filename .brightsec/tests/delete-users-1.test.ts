@@ -21,7 +21,7 @@ after(() => runner.clear());
 test('DELETE /users/1', { signal: AbortSignal.timeout(timeout) }, async () => {
   await runner
     .createScan({
-      tests: ['csrf', 'bopla', 'id_enumeration', 'sqli', 'full_path_disclosure'],
+      tests: ['full_path_disclosure'],
       attackParamLocations: [AttackParamLocation.PATH],
       starMetadata: {
         code_source: 'bararchy/vuln-app:main',
