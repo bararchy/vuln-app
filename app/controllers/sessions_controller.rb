@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 
   def create
     ### APPSEC Vuln 4: SQLi via parent class method with hash reassignment
-    if user = User.find_by_sql("SELECT * FROM users WHERE email = '#{get_email}'").first
+    if user = User.find_by(email: get_email)
       render json: { token: user.token }
     else
       render json: { error: "Invalid email or password" }
