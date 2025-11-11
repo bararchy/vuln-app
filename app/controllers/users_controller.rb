@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user, only: [:show]
+  before_action :authenticate_user, only: [:show]
+
   # POST /users
   # POST /users.json
   # POST /users.xml
@@ -71,6 +72,6 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params[:user]
+      params.require(:user).permit(:email, :password, :password_confirmation)
     end
 end
